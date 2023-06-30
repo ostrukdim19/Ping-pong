@@ -26,15 +26,30 @@ class Player(GameSprite):
             self.rect.y -= self.speed
     def update_r(self):
         key_pressed = key.get_pressed()
-        if key_pressed[K_UP] and self.rect.y < 5:
+        if key_pressed[K_UP] and self.rect.y > 5:
             self.rect.y -= self.speed
-        if key_pressed[K_DOWN] and self.rect.x > 420:
+        if key_pressed[K_DOWN] and self.rect.y < 420:
             self.rect.y += self.speed
+
+class Ball(GameSprite):
+    def update(self):
+        global lost
+        self.rect.y += self.speed
+
+raket_l = Player('Racket.png', 50, 185, 3, 25, 130)
+raket_r =  Player('Racket.png', 620, 185, 3, 25, 130)
+ball = Ball('Ball.png', 327, 227, 3, 46, 46)
 
 game = True
 while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
+    window.fill((0, 179, 255))
+    raket_l.reset()
+    raket_l.update_l()
+    raket_r.reset()
+    raket_r.update_r()
+    ball.reset()
     display.update()
     clock.tick(FPS)
